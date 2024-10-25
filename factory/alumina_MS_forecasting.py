@@ -228,24 +228,6 @@ class AluminaTransformerMSForecasting(GeneralForecasting):
         # pdb.set_trace()
         outputs = self._forward(samples_enc, None,  samples_dec, None)
         # outputs = self._forward(samples_enc,  samples_dec)
-       
-        # import pdb
-        # pdb.set_trace()
-
-        # e = shap.DeepExplainer(self.model,[samples_enc[0:60,:,:], samples_enc[0:60,:,:], samples_dec[0:60,:,:],samples_dec[0:60,:,:]])
-        # shap_values = e.shap_values([samples_enc[61:65,:,:], samples_enc[61:65,:,:], samples_dec[61:65,:,:],samples_dec[61:65,:,:]])
-        # e = shap.DeepExplainer(self.model,[samples_enc[0:60,:,:], datetimes_enc[0:60,:,:], samples_dec[0:60,:,:],datetimes_dec[0:60,:,:]])
-        # shap_values = e.shap_values([samples_enc[1:5,:,:], datetimes_enc[1:5,:,:], samples_dec[1:5,:,:],datetimes_dec[1:5,:,:]])
-        # e = shap.DeepExplainer(self.model(samples_enc, None, samples_dec,None),np.array(samples_batch.cpu()))
-        # e = shap.DeepExplainer(self.model,[samples_enc, samples_dec])
-        # e = shap.DeepExplainer(self.model,[samples_enc, samples_enc, samples_dec,samples_dec])
-        
-        # shap_values = e([samples_enc, samples_dec])
-        # e = shap.Explainer(self.predict,(samples_batch,None))
-        # e = shap.KernelExplainer(self.predict,np.array(samples_batch.cpu()))
-        # e = shap.Explainer(self.predict,np.array(samples_batch.cpu()))
-        # shap_values = e.shap_values(np.array(samples_batch[0].cpu()))
-        # shap_values = e((samples_batch,None))
 
         if self.args.stage=='pretrain':
             if 'itransformer' in self.args.model_id or 'patchtst' in self.args.model_id: # itransformer selected or patchtst selected
@@ -477,7 +459,6 @@ class AluminaTransformerMSForecasting(GeneralForecasting):
         return test_result
     
     def inference(self,args, sample):
-        # target_path = os.path.join(os.path.dirname(self.base_path),'checkpoint-%s.pth' % str(key))
         print('checkpoint loaded at:',self.args.inference_ckpt_path)
         self.model.load_state_dict(torch.load(self.args.inference_ckpt_path))
         self.to_eval()        

@@ -16,7 +16,7 @@ params={
     'target_cols': '1效蒸发器汽温',
     # 其他可以使用默认参数
     'use_nni': True,
-    'stage': 'train_only',
+    'stage': 'test',
     'model_id': 'alumina_timexer',
     'log_path': 'log',
     'checkpoints': './checkpoints/allfeature/timexer',
@@ -57,7 +57,8 @@ params={
     'use_norm': 1,
     'patch_len': 16,
     'target_num': 1,
-    'use_gpu': True,
+    # 'use_gpu': True,
+    'use_gpu': False,
     'hpo': 'nni'
 }
 args = argparse.Namespace(**params)
@@ -85,10 +86,14 @@ def list_to_input_tensor(input_list):
 def output_tensor_to_list(output_tensor):
     if output_tensor.device.type == 'cuda':
         output = output_tensor.detach().to('cpu')
-    target_scaler = inference_data.target_scaler
+    else:
+        output = output_tensor.detach()
+
     if len(output.shape)==3:
         output = output.reshape(output.shape[1],output.shape[2])
-    output = target_scaler.inverse_transform(output)
+    # * Not using inverse transform
+    # target_scaler = inference_data.target_scaler
+    # output = target_scaler.inverse_transform(output)
     return output.tolist()
 
 

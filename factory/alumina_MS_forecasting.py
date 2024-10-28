@@ -461,7 +461,7 @@ class AluminaTransformerMSForecasting(GeneralForecasting):
     def inference(self,args, sample):
         print('checkpoint loaded at:',self.args.inference_ckpt_path)
         self.model.load_state_dict(torch.load(self.args.inference_ckpt_path))
-        self.to_eval()        
+        self.to_eval()
         sample = sample.float().to(self.device)
         outputs = self.predict(sample[:,:self.args.seq_len,:], None)
         return outputs
